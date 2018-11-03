@@ -1,10 +1,9 @@
 #include <test.hpp>
 
-#include <core.hpp>
+#include <hybrid_breadth_first.h>
 
 #include <vector>
 
-TEST(Core, BasicTest) {
-    Core core;
+TEST(HBF, BasicTest) {
     ASSERT_TRUE(true);
 }
