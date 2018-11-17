@@ -6,8 +6,6 @@
 #include <math.h>
 #include <vector>
 
-using namespace std;
-
 class HBF {
 public:
 
@@ -16,7 +14,6 @@ public:
     double LENGTH = 0.5;
 
     struct maze_s {
-
         int g;    // iteration
         double x;
         double y;
@@ -24,17 +21,15 @@ public:
     };
 
     struct maze_path {
-
-        vector<vector<vector<int> > > closed;
-        vector<vector<vector<maze_s> > > came_from;
+        std::vector<std::vector<std::vector<int>>> closed;
+        std::vector<std::vector<std::vector<maze_s>>> came_from;
         maze_s final;
-
     };
 
 
     /**
-      * Constructor
-      */
+     * Constructor
+     */
     HBF();
 
     /**
@@ -47,11 +42,11 @@ public:
 
     int idx(double float_num);
 
-    vector<maze_s> expand(maze_s state);
+    std::vector<maze_s> expand(maze_s state);
 
-    maze_path search(vector<vector<int> > grid, vector<double> start, vector<int> goal);
+    maze_path search(std::vector<std::vector<int>> grid, std::vector<double> start, std::vector<int> goal);
 
-    vector<maze_s>
-    reconstruct_path(vector<vector<vector<maze_s> > > came_from, vector<double> start, HBF::maze_s final);
+    std::vector<maze_s>
+    reconstruct_path(std::vector<std::vector<std::vector<maze_s>>> came_from, std::vector<double> start, maze_s final);
 
 };
