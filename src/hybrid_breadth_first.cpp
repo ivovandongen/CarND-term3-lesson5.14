@@ -7,6 +7,9 @@
 
 using namespace std;
 
+static double distance_to_goal(double x, double y, double targetX, double targetY) {
+    return abs(x - targetX) + abs(y - targetY);
+}
 
 /**
  * Initializes HBF
@@ -39,7 +42,7 @@ int HBF::idx(double float_num) {
 }
 
 
-vector<HBF::maze_s> HBF::expand(HBF::maze_s state) {
+vector<HBF::maze_s> HBF::expand(HBF::maze_s state, int targetX, int targetY) {
     int g = state.g;
     double x = state.x;
     double y = state.y;
@@ -56,7 +59,7 @@ vector<HBF::maze_s> HBF::expand(HBF::maze_s state) {
         }
         double x2 = x + SPEED * cos(theta);
         double y2 = y + SPEED * sin(theta);
-        next_states.push_back({g2, x2, y2, theta2});
+        next_states.push_back({g2, x2, y2, theta2, g2 + distance_to_goal(x2, y2, targetX, targetY)});
 
     }
     return next_states;
@@ -106,7 +109,8 @@ HBF::maze_path HBF::search(vector<vector<int>> grid, vector<double> start, vecto
             g,
             start[0],
             start[1],
-            theta
+            theta,
+            g + distance_to_goal(start[0], start[1], goal[0], goal[1])
     };
 
     closed[stack][idx(state.x)][idx(state.y)] = 1;
@@ -115,8 +119,11 @@ HBF::maze_path HBF::search(vector<vector<int>> grid, vector<double> start, vecto
     vector<maze_s> opened = {state};
     bool finished = false;
     while (!opened.empty()) {
+        sort(opened.begin(), opened.end(), [](const auto &l, const auto &r) {
+            return l.f < r.f;
+        });
 
-        maze_s current = opened[0]; //grab first elment
+        maze_s current = opened[0]; //grab first element
         opened.erase(opened.begin()); //pop first element
 
         int x = int(current.x);
@@ -131,7 +138,7 @@ HBF::maze_path HBF::search(vector<vector<int>> grid, vector<double> start, vecto
             return path;
 
         }
-        vector<maze_s> next_state = expand(current);
+        vector<maze_s> next_state = expand(current, goal[0], goal[1]);
 
         for (auto &i : next_state) {
             int g2 = i.g;

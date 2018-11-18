@@ -18,6 +18,7 @@ public:
         double x;
         double y;
         double theta;
+        double f;
     };
 
     struct maze_path {
@@ -42,7 +43,7 @@ public:
 
     int idx(double float_num);
 
-    std::vector<maze_s> expand(maze_s state);
+    std::vector<maze_s> expand(maze_s state, int targetX, int targetY);
 
     maze_path search(std::vector<std::vector<int>> grid, std::vector<double> start, std::vector<int> goal);
 
